@@ -1,6 +1,7 @@
 #include <DxLib.h>
 #include "main.h"
 #include "Keyboard.h"
+#include "ImageManager.h"
 
 //------------------------------------------------------//
 // メイン関数                                           //
@@ -29,13 +30,14 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 		ErrorExit("DXライブラリの初期化に失敗しました。");
 	}
 	SetDrawScreen(DX_SCREEN_BACK); // ダブルバッファのためのセッタ
+	ImageManager::GetInstance();
 
 	while (true) {
 		if (!LoopStart()) break; // 初期化処理
 		Keyboard::GetInstance()->Update();
 		if (KEYINPUT(KEY_INPUT_ESCAPE) == 1) break;
 
-		// ここに処理を書く
+		DrawGraph(0, 0, GETIMAGE("mychar"), true);
 	}
 
 	DxLib_End();

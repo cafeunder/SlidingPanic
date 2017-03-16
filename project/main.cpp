@@ -2,6 +2,7 @@
 #include "main.h"
 #include "Keyboard.h"
 #include "ImageManager.h"
+#include "Board.h"
 
 //------------------------------------------------------//
 // メイン関数                                           //
@@ -32,12 +33,13 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	SetDrawScreen(DX_SCREEN_BACK); // ダブルバッファのためのセッタ
 	ImageManager::GetInstance();
 
+	Board board(12, 8);
 	while (true) {
 		if (!LoopStart()) break; // 初期化処理
 		Keyboard::GetInstance()->Update();
 		if (KEYINPUT(KEY_INPUT_ESCAPE) == 1) break;
 
-		DrawGraph(0, 0, GETIMAGE("mychar"), true);
+		board.Draw();
 	}
 
 	DxLib_End();

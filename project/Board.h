@@ -12,10 +12,13 @@ private:
 	int xSize;
 	int ySize;
 	int** pieceArray;
+	int imageHandle;
+	int* imageHandleArray;
 
 public :
 	Board(int xSize, int ySize);
 	~Board();
+	void ReadStageFile(const char* stage_name);
 	void Update();
 	void Draw();
 };

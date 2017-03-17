@@ -2,7 +2,7 @@
 #include "ImageManager.h"
 
 const char* image_list[] = {
-	"mychar",
+	"tile",
 	0
 };
 

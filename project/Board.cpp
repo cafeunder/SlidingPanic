@@ -1,25 +1,69 @@
 #include <DxLib.h>
+#include <fstream>
+#include <sstream>
 #include "Board.h"
+#include "ImageManager.h"
 #include "Keyboard.h"
 
 Board::Board(int xSize, int ySize) {
+	// ボードサイズとブランクの位置を初期化
 	this->xSize = xSize;
 	this->ySize = ySize;
 	this->blankX = this->xSize - 1;
 	this->blankY = this->ySize - 1;
 
+	// ピース配列を初期化
 	this->pieceArray = new int*[ySize];
 	for (int y = 0; y < this->ySize; y++) {
 		this->pieceArray[y] = new int[xSize];
 		for (int x = 0; x < this->xSize; x++) {
-			this->pieceArray[y][x] = 1;
+			this->pieceArray[y][x] = -1;
 		}
 	}
-	this->pieceArray[this->blankY][this->blankX] = 0;
+
+	// ファイルを読み込んで配列を初期化
+	this->ReadStageFile("test");
+
+	// 元画像を読み込む
+	this->imageHandle = GETIMAGE("tile");
+	int image_width, image_height;
+	GetGraphSize(this->imageHandle, &image_width, &image_height);
+
+	// 元画像をピースごとの画像に分割する
+	int image_xnum = image_width / PIECE_SIZE;
+	int image_ynum = image_height / PIECE_SIZE;
+	this->imageHandleArray = new int[image_xnum * image_ynum];
+	for (int y = 0; y < image_ynum; y++) {
+		for (int x = 0; x < image_xnum; x++) {
+			int handle = DerivationGraph(x * PIECE_SIZE, y * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE, this->imageHandle); 
+			this->imageHandleArray[x + y * image_xnum] = handle;
+		}
+	}
 }
 
 Board::~Board() {
 	delete[] this->pieceArray;
+	delete this->imageHandleArray;
+}
+
+void Board::ReadStageFile(const char* stage_name) {
+	char buf[256];
+	sprintf(buf, "data\\stage\\%s.txt", stage_name);
+	std::ifstream input_stream(buf, std::ios::in);
+
+	std::string line;
+	for (int y = 0; y < this->ySize; y++) {
+		std::getline(input_stream, line);
+
+		const char delimiter =  ',';
+		std::istringstream separater(line);
+
+		std::string record;
+		for (int x = 0; x < this->xSize; x++) {
+			std::getline(separater, record, delimiter);
+			this->pieceArray[y][x] = std::stoi(record);
+		}
+	}
 }
 
 void Board::Update() {
@@ -58,11 +102,7 @@ void Board::Draw() {
 		for (int x = 0; x < this->xSize; x++) {
 			int dx = x * PIECE_SIZE + OFFSET_X;
 			int dy = y * PIECE_SIZE + OFFSET_Y;
-
-			if (this->pieceArray[y][x] != 0) {
-				DrawBox(dx, dy, dx + PIECE_SIZE, dy + PIECE_SIZE, GetColor(10, 80, 240), true);
-				DrawBox(dx, dy, dx + PIECE_SIZE, dy + PIECE_SIZE, GetColor(255, 255, 255), false);
-			}
+			DrawGraph(dx, dy, this->imageHandleArray[this->pieceArray[y][x]], true);
 		}
 	}
 }

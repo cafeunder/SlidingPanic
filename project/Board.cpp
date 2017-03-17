@@ -1,5 +1,6 @@
-#include "Board.h"
 #include <DxLib.h>
+#include "Board.h"
+#include "Keyboard.h"
 
 Board::Board(int xSize, int ySize) {
 	this->xSize = xSize;
@@ -22,6 +23,34 @@ Board::~Board() {
 }
 
 void Board::Update() {
+	if (KEYINPUT(KEY_INPUT_UP) == 1) {
+		if (this->blankY > 0) {
+			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY - 1][this->blankX];
+			--this->blankY;
+			this->pieceArray[this->blankY][this->blankX] = 0;
+		}
+	}
+	if (KEYINPUT(KEY_INPUT_DOWN) == 1) {
+		if (this->blankY < this->ySize - 1) {
+			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY + 1][this->blankX];
+			++this->blankY;
+			this->pieceArray[this->blankY][this->blankX] = 0;
+		}
+	}
+	if (KEYINPUT(KEY_INPUT_LEFT) == 1) {
+		if (this->blankX > 0) {
+			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY][this->blankX - 1];
+			--this->blankX;
+			this->pieceArray[this->blankY][this->blankX] = 0;
+		}
+	}
+	if (KEYINPUT(KEY_INPUT_RIGHT) == 1) {
+		if (this->blankX < this->xSize - 1) {
+			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY][this->blankX + 1];
+			++this->blankX;
+			this->pieceArray[this->blankY][this->blankX] = 0;
+		}
+	}
 }
 
 void Board::Draw() {

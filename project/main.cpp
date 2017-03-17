@@ -39,6 +39,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 		Keyboard::GetInstance()->Update();
 		if (KEYINPUT(KEY_INPUT_ESCAPE) == 1) break;
 
+		board.Update();
 		board.Draw();
 	}
 

@@ -5,6 +5,21 @@
 #include "ImageManager.h"
 #include "Keyboard.h"
 
+enum PIECE_TYPE {
+	PIECE_BLANK,
+	PIECE_PLANE,
+	PIECE_BLOCK,
+	PIECE_LEFT_RIGHT,
+	PIECE_UP_DOWN,
+	PIECE_LEFT_UP,
+	PIECE_RIGHT_UP,
+	PIECE_RIGHT_DOWN,
+	PIECE_LEFT_DOWN,
+	PIECE_UP,
+	PIECE_RIGHT,
+	PIECE_DOWN,
+};
+
 Board::Board(int xSize, int ySize) {
 	// ボードサイズとブランクの位置を初期化
 	this->xSize = xSize;
@@ -62,6 +77,10 @@ void Board::ReadStageFile(const char* stage_name) {
 		for (int x = 0; x < this->xSize; x++) {
 			std::getline(separater, record, delimiter);
 			this->pieceArray[y][x] = std::stoi(record);
+			if (this->pieceArray[y][x] == 0) {
+				this->blankX = x;
+				this->blankY = y;
+			}
 		}
 	}
 }

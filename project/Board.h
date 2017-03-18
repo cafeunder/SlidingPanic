@@ -21,6 +21,8 @@ public :
 	void ReadStageFile(const char* stage_name);
 	void Update();
 	void Draw();
+	bool CanReplace(int x, int y);
+	bool IsBlock(int piece);
 };
 
 #endif

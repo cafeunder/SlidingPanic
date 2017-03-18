@@ -15,10 +15,15 @@ enum PIECE_TYPE {
 	PIECE_RIGHT_UP,
 	PIECE_RIGHT_DOWN,
 	PIECE_LEFT_DOWN,
-	PIECE_UP,
-	PIECE_RIGHT,
-	PIECE_DOWN,
+	PIECE_UP_BLOCK,
+	PIECE_RIGHT_BLOCK,
+	PIECE_DOWN_BLOCK,
+	PIECE_LEFT_BLOCK,
+	PIECE_LEFT_RIGHT_BLOCK,
+	PIECE_UP_DOWN_BLOCK
 };
+
+#define KEYINPUT(input) (Keyboard::GetInstance()->GetKeyInput(input))
 
 Board::Board(int xSize, int ySize) {
 	// ボードサイズとブランクの位置を初期化
@@ -87,28 +92,28 @@ void Board::ReadStageFile(const char* stage_name) {
 
 void Board::Update() {
 	if (KEYINPUT(KEY_INPUT_UP) == 1) {
-		if (this->blankY > 0) {
+		if (this->CanReplace(this->blankX, this->blankY - 1)) {
 			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY - 1][this->blankX];
 			--this->blankY;
 			this->pieceArray[this->blankY][this->blankX] = 0;
 		}
 	}
 	if (KEYINPUT(KEY_INPUT_DOWN) == 1) {
-		if (this->blankY < this->ySize - 1) {
+		if (this->CanReplace(this->blankX, this->blankY + 1)) {
 			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY + 1][this->blankX];
 			++this->blankY;
 			this->pieceArray[this->blankY][this->blankX] = 0;
 		}
 	}
 	if (KEYINPUT(KEY_INPUT_LEFT) == 1) {
-		if (this->blankX > 0) {
+		if (this->CanReplace(this->blankX - 1, this->blankY)) {
 			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY][this->blankX - 1];
 			--this->blankX;
 			this->pieceArray[this->blankY][this->blankX] = 0;
 		}
 	}
 	if (KEYINPUT(KEY_INPUT_RIGHT) == 1) {
-		if (this->blankX < this->xSize - 1) {
+		if (this->CanReplace(this->blankX + 1, this->blankY)) {
 			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY][this->blankX + 1];
 			++this->blankX;
 			this->pieceArray[this->blankY][this->blankX] = 0;
@@ -124,4 +129,28 @@ void Board::Draw() {
 			DrawGraph(dx, dy, this->imageHandleArray[this->pieceArray[y][x]], true);
 		}
 	}
+}
+
+bool Board::CanReplace(int x, int y) {
+	if (x < 0 && x >= this->xSize && y < 0 && y >= this->ySize) {
+		return false;
+	}
+	if (this->IsBlock(this->pieceArray[y][x])) {
+		return false;
+	}
+	return true;
+}
+
+bool Board::IsBlock(int piece) {
+	return (piece == PIECE_BLOCK ||
+		piece == PIECE_UP_BLOCK ||
+		piece == PIECE_RIGHT_BLOCK ||
+		piece == PIECE_DOWN_BLOCK ||
+		piece == PIECE_LEFT_BLOCK ||
+		piece == PIECE_UP_BLOCK ||
+		piece == PIECE_RIGHT_BLOCK ||
+		piece == PIECE_DOWN_BLOCK ||
+		piece == PIECE_LEFT_BLOCK ||
+		piece == PIECE_LEFT_RIGHT_BLOCK ||
+		piece == PIECE_UP_DOWN_BLOCK);
 }

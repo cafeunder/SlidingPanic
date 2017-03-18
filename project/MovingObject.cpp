@@ -7,7 +7,7 @@ MovingObject::MovingObject(int px, int py) {
 	this->px = px;
 	this->py = py;
 
-	this->direction = DIRECTION_UP;
+	this->direction = DIRECTION_DOWN;
 	this->imageHandle = GETIMAGE("mychar");
 	GetGraphSize(this->imageHandle, &this->imageWidth, &this->imageHeight);
 }
@@ -30,7 +30,7 @@ void MovingObject::Update() {
 }
 
 void MovingObject::Draw() {
-	int dx = this->px + this->imageWidth / 2;
-	int dy = this->py + this->imageHeight / 2;
+	int dx = this->px - this->imageWidth / 2 + BOARD_OFFSET_X;
+	int dy = this->py - this->imageHeight / 2 + BOARD_OFFSET_Y;
 	DrawGraph(dx, dy, this->imageHandle, true);
 }

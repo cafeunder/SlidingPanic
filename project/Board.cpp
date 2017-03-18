@@ -1,6 +1,4 @@
 #include <DxLib.h>
-#include <fstream>
-#include <sstream>
 #include "Board.h"
 #include "ImageManager.h"
 #include "Keyboard.h"
@@ -31,18 +29,7 @@ Board::Board(int xSize, int ySize) {
 	this->ySize = ySize;
 	this->blankX = this->xSize - 1;
 	this->blankY = this->ySize - 1;
-
-	// ピース配列を初期化
-	this->pieceArray = new int*[ySize];
-	for (int y = 0; y < this->ySize; y++) {
-		this->pieceArray[y] = new int[xSize];
-		for (int x = 0; x < this->xSize; x++) {
-			this->pieceArray[y][x] = -1;
-		}
-	}
-
-	// ファイルを読み込んで配列を初期化
-	this->ReadStageFile("test");
+	this->pieceArray = 0;
 
 	// 元画像を読み込む
 	this->imageHandle = GETIMAGE("tile");
@@ -66,28 +53,14 @@ Board::~Board() {
 	delete this->imageHandleArray;
 }
 
-void Board::ReadStageFile(const char* stage_name) {
-	char buf[256];
-	sprintf(buf, "data\\stage\\%s.txt", stage_name);
-	std::ifstream input_stream(buf, std::ios::in);
-
-	std::string line;
-	for (int y = 0; y < this->ySize; y++) {
-		std::getline(input_stream, line);
-
-		const char delimiter =  ',';
-		std::istringstream separater(line);
-
-		std::string record;
-		for (int x = 0; x < this->xSize; x++) {
-			std::getline(separater, record, delimiter);
-			this->pieceArray[y][x] = std::stoi(record);
-			if (this->pieceArray[y][x] == 0) {
-				this->blankX = x;
-				this->blankY = y;
-			}
-		}
+void Board::SetPieceArray(int** pieceArray, int blankX, int blankY) {
+	if (this->pieceArray) {
+		delete[] this->pieceArray;
 	}
+
+	this->pieceArray = pieceArray;
+	this->blankX = blankX;
+	this->blankY = blankY;
 }
 
 void Board::Update() {
@@ -124,8 +97,8 @@ void Board::Update() {
 void Board::Draw() {
 	for (int y = 0; y < this->ySize; y++) {
 		for (int x = 0; x < this->xSize; x++) {
-			int dx = x * PIECE_SIZE + OFFSET_X;
-			int dy = y * PIECE_SIZE + OFFSET_Y;
+			int dx = x * PIECE_SIZE + BOARD_OFFSET_X;
+			int dy = y * PIECE_SIZE + BOARD_OFFSET_Y;
 			DrawGraph(dx, dy, this->imageHandleArray[this->pieceArray[y][x]], true);
 		}
 	}

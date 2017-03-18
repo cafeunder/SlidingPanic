@@ -2,8 +2,7 @@
 #include "main.h"
 #include "Keyboard.h"
 #include "ImageManager.h"
-#include "Board.h"
-#include "MovingObject.h"
+#include "Stage.h"
 
 //------------------------------------------------------//
 // メイン関数                                           //
@@ -34,18 +33,15 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	SetDrawScreen(DX_SCREEN_BACK); // ダブルバッファのためのセッタ
 	ImageManager::GetInstance();
 
-	Board board(12, 8);
-	MovingObject movingObject(100, 100);
+	Stage stage;
+	stage.ReadFile("test");
 	while (true) {
 		if (!LoopStart()) break; // 初期化処理
 		Keyboard::GetInstance()->Update();
 		if (KEYINPUT(KEY_INPUT_ESCAPE) == 1) break;
 
-		board.Update();
-		movingObject.Update();
-
-		board.Draw();
-		movingObject.Draw();
+		stage.Update();
+		stage.Draw();
 	}
 
 	DxLib_End();

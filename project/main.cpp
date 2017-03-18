@@ -3,6 +3,7 @@
 #include "Keyboard.h"
 #include "ImageManager.h"
 #include "Board.h"
+#include "MovingObject.h"
 
 //------------------------------------------------------//
 // ƒƒCƒ“ŠÖ”                                           //
@@ -34,13 +35,17 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	ImageManager::GetInstance();
 
 	Board board(12, 8);
+	MovingObject movingObject(100, 100);
 	while (true) {
 		if (!LoopStart()) break; // ‰Šú‰»ˆ—
 		Keyboard::GetInstance()->Update();
 		if (KEYINPUT(KEY_INPUT_ESCAPE) == 1) break;
 
 		board.Update();
+		movingObject.Update();
+
 		board.Draw();
+		movingObject.Draw();
 	}
 
 	DxLib_End();

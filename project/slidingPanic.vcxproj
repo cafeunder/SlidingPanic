@@ -71,12 +71,14 @@
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MovingObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="MovingObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

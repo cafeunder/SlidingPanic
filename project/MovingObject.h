@@ -21,6 +21,7 @@ private:
 	int imageWidth;
 	int imageHeight;
 	int movingCount;
+	bool checkedChangeDirection;
 
 public :
 	MovingObject(int px, int py, Board* board);

@@ -9,12 +9,15 @@ MovingObject::MovingObject(int px, int py, Board* board) {
 	this->py = py;
 	this->movingCount = 0;
 	this->direction = this->board->GetChangeDirection(this->GetBoardX(), this->GetBoardY(), DIRECTION_NONE);
+	this->checkedChangeDirection = true;
 
 	this->imageHandle = GETIMAGE("mychar");
 	GetGraphSize(this->imageHandle, &this->imageWidth, &this->imageHeight);
 }
 
 void MovingObject::Update() {
+	int bx = this->GetBoardX();
+	int by = this->GetBoardY();
 	switch(this->direction) {
 	case DIRECTION_UP:
 		this->py -= MOVE_SPEED / 60.0;
@@ -28,6 +31,29 @@ void MovingObject::Update() {
 	case DIRECTION_RIGHT:
 		this->px += MOVE_SPEED / 60.0;
 		break;
+	}
+
+	if (bx != this->GetBoardX() || by != this->GetBoardY()) {
+		this->checkedChangeDirection = false;
+	}
+
+	// ピースの中盤に初めて差し掛かったら、方向転換するかどうかをチェック
+	if (!this->checkedChangeDirection
+		&& (this->px >= this->GetBoardX() * PIECE_SIZE + PIECE_SIZE / 2
+		&& this->py >= this->GetBoardY() * PIECE_SIZE + PIECE_SIZE / 2)) {
+		DIRECTION change_direction = this->board->GetChangeDirection(this->GetBoardX(), this->GetBoardY(), this->direction); 
+		if (change_direction != DIRECTION_NONE) {
+			this->direction = change_direction;
+
+			// 中盤からはみ出た部分を放置すると少しずつズレていくので、位置を修正する
+			if (this->px >= this->GetBoardX() * PIECE_SIZE + PIECE_SIZE / 2) {
+				this->px = this->GetBoardX() * PIECE_SIZE + PIECE_SIZE / 2;
+			}
+			if (this->py >= this->GetBoardY() * PIECE_SIZE + PIECE_SIZE / 2) {
+				this->py = this->GetBoardY() * PIECE_SIZE + PIECE_SIZE / 2;
+			}
+		}
+		this->checkedChangeDirection = true;
 	}
 }
 

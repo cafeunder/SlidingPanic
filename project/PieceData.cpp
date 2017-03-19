@@ -59,6 +59,7 @@ DIRECTION PieceData::GetChangeDirection(int piece_id, DIRECTION direction) {
 	if ((change_flag & PieceData::FLAG_CHANGE_LEFT) != 0) {
 		return DIRECTION_LEFT;
 	}
+	return DIRECTION_NONE;
 }
 
 PieceData::PIECE_PROPERTY_FLAG PieceData::DirectionToCanEnterFlag(DIRECTION direction) {

@@ -92,16 +92,16 @@ bool Board::CanReplace(int x, int y) {
 	if (x < 0 && x >= this->xSize && y < 0 && y >= this->ySize) {
 		return false;
 	}
-	if (this->IsBlock(x, y)) {
+	if (PieceData::IsBlock(this->pieceArray[y][x])) {
 		return false;
 	}
 	return true;
 }
 
-DIRECTION Board::GetChangeDirection(int x, int y, DIRECTION current) {
-	return PieceData::GetChangeDirection(this->pieceArray[y][x], current);
+bool Board::CanEnter(int x, int y, DIRECTION current) {
+	return PieceData::CanEnter(this->pieceArray[y][x], current);
 }
 
-bool Board::IsBlock(int x, int y) {
-	return PieceData::IsBlock(this->pieceArray[y][x]);
+DIRECTION Board::GetChangeDirection(int x, int y, DIRECTION current) {
+	return PieceData::GetChangeDirection(this->pieceArray[y][x], current);
 }

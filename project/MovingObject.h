@@ -12,16 +12,19 @@ enum DIRECTION {
 
 class MovingObject {
 private:
-	static const int MOVE_SPEED = 10;
+	static const int IMAGE_SIZE = 32;
+	static const int MOVE_SPEED = 20;
 	Board* board;
 	float px;
 	float py;
 	DIRECTION direction;
-	int imageHandle;
-	int imageWidth;
-	int imageHeight;
 	int movingCount;
 	bool checkedChangeDirection;
+	bool live;
+	int imageHandle;
+	int* imageHandleArray;
+	int imageWidth;
+	int imageHeight;
 
 public :
 	MovingObject(int px, int py, Board* board);

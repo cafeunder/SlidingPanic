@@ -62,16 +62,18 @@ DIRECTION PieceData::GetChangeDirection(int piece_id, DIRECTION direction) {
 	return DIRECTION_NONE;
 }
 
+// 進入方向から、チェックすべき進入可能な方向のフラグを返す
+// 例えば、下方向へ侵入するなら、ピースの上が進入可能かどうかを調べれば良い
 PieceData::PIECE_PROPERTY_FLAG PieceData::DirectionToCanEnterFlag(DIRECTION direction) {
 	switch(direction) {
 	case DIRECTION_UP:
-		return PieceData::FLAG_CAN_ENTER_UP;
-	case DIRECTION_RIGHT:
-		return PieceData::FLAG_CAN_ENTER_RIGHT;
-	case DIRECTION_DOWN:
 		return PieceData::FLAG_CAN_ENTER_DOWN;
-	case DIRECTION_LEFT:
+	case DIRECTION_RIGHT:
 		return PieceData::FLAG_CAN_ENTER_LEFT;
+	case DIRECTION_DOWN:
+		return PieceData::FLAG_CAN_ENTER_UP;
+	case DIRECTION_LEFT:
+		return PieceData::FLAG_CAN_ENTER_RIGHT;
 	}
 	return PieceData::FLAG_NONE;
 }

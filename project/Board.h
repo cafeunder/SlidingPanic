@@ -1,9 +1,6 @@
 #ifndef BOARD_DEF
 #define BOARD_DEF
 
-#define BOARD_OFFSET_X 32
-#define BOARD_OFFSET_Y 64
-#define PIECE_SIZE 48
 enum DIRECTION;
 
 class Board {
@@ -18,13 +15,18 @@ private:
 	int imageHandle;
 	int* imageHandleArray;
 
+	bool CanReplace(int x, int y);
+
 public :
+	static const int PIECE_SIZE = 48;
+	static const int BOARD_OFFSET_X = 32;
+	static const int BOARD_OFFSET_Y = 64;
+
 	Board(int xSize, int ySize);
 	~Board();
 	void Update();
 	void Draw();
-	bool CanReplace(int x, int y);
-	bool IsBlock(int x, int y);
+	bool CanEnter(int x, int y, DIRECTION current);
 	int GetXSize() { return this->xSize; }
 	int GetYSize() { return this->ySize; }
 	void SetPieceArray(int** pieceArray, int blankX, int blankY);

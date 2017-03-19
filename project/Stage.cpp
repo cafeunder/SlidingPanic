@@ -61,5 +61,8 @@ void Stage::ReadFile(const char* stage_name) {
 		}
 	}
 	this->board->SetPieceArray(piece_array, blankX, blankY);
-	this->movingObject = new MovingObject(mx * PIECE_SIZE + PIECE_SIZE / 2, my * PIECE_SIZE + PIECE_SIZE / 2, this->board);
+	this->movingObject = new MovingObject(
+		mx * Board::PIECE_SIZE + Board::PIECE_SIZE / 2,
+		my * Board::PIECE_SIZE + Board::PIECE_SIZE / 2, this->board
+	);
 }

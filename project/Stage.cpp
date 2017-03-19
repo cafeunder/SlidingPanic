@@ -39,7 +39,6 @@ void Stage::ReadFile(const char* stage_name) {
 	int mx = std::stoi(record);
 	std::getline(separater, record, delimiter);
 	int my = std::stoi(record);
-	this->movingObject = new MovingObject(mx * PIECE_SIZE, my * PIECE_SIZE);
 
 	// Board‚Ì“Ç‚İ‚İ
 	int xNum = this->board->GetXSize();
@@ -62,4 +61,5 @@ void Stage::ReadFile(const char* stage_name) {
 		}
 	}
 	this->board->SetPieceArray(piece_array, blankX, blankY);
+	this->movingObject = new MovingObject(mx * PIECE_SIZE + PIECE_SIZE / 2, my * PIECE_SIZE + PIECE_SIZE / 2, this->board);
 }

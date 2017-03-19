@@ -1,25 +1,9 @@
 #include <DxLib.h>
+#include "MovingObject.h"
 #include "Board.h"
 #include "ImageManager.h"
 #include "Keyboard.h"
-
-enum PIECE_TYPE {
-	PIECE_BLANK,
-	PIECE_PLANE,
-	PIECE_BLOCK,
-	PIECE_LEFT_RIGHT,
-	PIECE_UP_DOWN,
-	PIECE_LEFT_UP,
-	PIECE_RIGHT_UP,
-	PIECE_RIGHT_DOWN,
-	PIECE_LEFT_DOWN,
-	PIECE_UP_BLOCK,
-	PIECE_RIGHT_BLOCK,
-	PIECE_DOWN_BLOCK,
-	PIECE_LEFT_BLOCK,
-	PIECE_LEFT_RIGHT_BLOCK,
-	PIECE_UP_DOWN_BLOCK
-};
+#include "PieceData.h"
 
 #define KEYINPUT(input) (Keyboard::GetInstance()->GetKeyInput(input))
 
@@ -108,22 +92,16 @@ bool Board::CanReplace(int x, int y) {
 	if (x < 0 && x >= this->xSize && y < 0 && y >= this->ySize) {
 		return false;
 	}
-	if (this->IsBlock(this->pieceArray[y][x])) {
+	if (this->IsBlock(x, y)) {
 		return false;
 	}
 	return true;
 }
 
-bool Board::IsBlock(int piece) {
-	return (piece == PIECE_BLOCK ||
-		piece == PIECE_UP_BLOCK ||
-		piece == PIECE_RIGHT_BLOCK ||
-		piece == PIECE_DOWN_BLOCK ||
-		piece == PIECE_LEFT_BLOCK ||
-		piece == PIECE_UP_BLOCK ||
-		piece == PIECE_RIGHT_BLOCK ||
-		piece == PIECE_DOWN_BLOCK ||
-		piece == PIECE_LEFT_BLOCK ||
-		piece == PIECE_LEFT_RIGHT_BLOCK ||
-		piece == PIECE_UP_DOWN_BLOCK);
+DIRECTION Board::GetChangeDirection(int x, int y, DIRECTION current) {
+	return PieceData::GetChangeDirection(this->pieceArray[y][x], current);
+}
+
+bool Board::IsBlock(int x, int y) {
+	return PieceData::IsBlock(this->pieceArray[y][x]);
 }

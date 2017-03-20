@@ -13,10 +13,11 @@ enum DIRECTION {
 class MovingObject {
 private:
 	static const int IMAGE_SIZE = 32;
-	static const int MOVE_SPEED = 20;
+	static const int POSITION_SCALE = 100;
+	static const int MOVE_SPEED = 60;
 	Board* board;
-	float px;
-	float py;
+	int px;
+	int py;
 	DIRECTION direction;
 	int movingCount;
 	bool checkedChangeDirection;
@@ -32,6 +33,8 @@ public :
 	void Draw();
 	int GetBoardX();
 	int GetBoardY();
+	int GetCenterPieceX();
+	int GetCenterPieceY();
 };
 
 #endif

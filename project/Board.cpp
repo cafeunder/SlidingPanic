@@ -14,6 +14,7 @@ Board::Board(int xSize, int ySize) {
 	this->blankX = this->xSize - 1;
 	this->blankY = this->ySize - 1;
 	this->pieceArray = 0;
+	this->replaced = false;
 
 	// 元画像を読み込む
 	this->imageHandle = GETIMAGE("tile");
@@ -47,33 +48,54 @@ void Board::SetPieceArray(int** pieceArray, int blankX, int blankY) {
 	this->blankY = blankY;
 }
 
+void Board::Replace(int x, int y, DIRECTION direction) {
+	int piece_id = this->pieceArray[y][x];
+
+	switch (direction) {
+	case DIRECTION_UP:
+		this->pieceArray[y - 1][x] = piece_id;
+		break;
+	case DIRECTION_DOWN:
+		this->pieceArray[y + 1][x] = piece_id;
+		break;
+	case DIRECTION_LEFT:
+		this->pieceArray[y][x - 1] = piece_id;
+		break;
+	case DIRECTION_RIGHT:
+		this->pieceArray[y][x + 1] = piece_id;
+		break;
+	}
+
+	this->blankX = x;
+	this->blankY = y;
+	this->pieceArray[y][x] = PieceData::PIECE_BLANK;
+
+	this->replaced = true;
+	this->replaceDirection = direction;
+	this->replaceX = x;
+	this->replaceY = y;
+}
+
 void Board::Update() {
+	this->replaced = false;
+
+	// 各スライドキーに従ってピースを置き換える
+	// 1フレームに1方向の入力しか受け付けない
 	if (KEYINPUT(KEY_INPUT_UP) == 1) {
 		if (this->CanReplace(this->blankX, this->blankY - 1)) {
-			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY - 1][this->blankX];
-			--this->blankY;
-			this->pieceArray[this->blankY][this->blankX] = 0;
+			this->Replace(this->blankX, this->blankY - 1, DIRECTION_DOWN);
 		}
-	}
-	if (KEYINPUT(KEY_INPUT_DOWN) == 1) {
+	} else if (KEYINPUT(KEY_INPUT_DOWN) == 1) {
 		if (this->CanReplace(this->blankX, this->blankY + 1)) {
-			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY + 1][this->blankX];
-			++this->blankY;
-			this->pieceArray[this->blankY][this->blankX] = 0;
+			this->Replace(this->blankX, this->blankY + 1, DIRECTION_UP);
 		}
-	}
-	if (KEYINPUT(KEY_INPUT_LEFT) == 1) {
+	} else if (KEYINPUT(KEY_INPUT_LEFT) == 1) {
 		if (this->CanReplace(this->blankX - 1, this->blankY)) {
-			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY][this->blankX - 1];
-			--this->blankX;
-			this->pieceArray[this->blankY][this->blankX] = 0;
+			this->Replace(this->blankX - 1, this->blankY, DIRECTION_RIGHT);
 		}
-	}
-	if (KEYINPUT(KEY_INPUT_RIGHT) == 1) {
+	} else if (KEYINPUT(KEY_INPUT_RIGHT) == 1) {
 		if (this->CanReplace(this->blankX + 1, this->blankY)) {
-			this->pieceArray[this->blankY][this->blankX] = this->pieceArray[this->blankY][this->blankX + 1];
-			++this->blankX;
-			this->pieceArray[this->blankY][this->blankX] = 0;
+			this->Replace(this->blankX + 1, this->blankY, DIRECTION_LEFT);
 		}
 	}
 }
@@ -104,4 +126,11 @@ bool Board::CanEnter(int x, int y, DIRECTION current) {
 
 DIRECTION Board::GetChangeDirection(int x, int y, DIRECTION current) {
 	return PieceData::GetChangeDirection(this->pieceArray[y][x], current);
+}
+
+bool Board::GetReplaceData(int* out_x, int* out_y, DIRECTION* direction) {
+	*out_x = this->replaceX;
+	*out_y = this->replaceY;
+	*direction = this->replaceDirection;
+	return this->replaced;
 }

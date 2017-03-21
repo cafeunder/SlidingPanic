@@ -31,6 +31,7 @@ public :
 	void Update();
 	void Draw();
 	bool CanEnter(int x, int y, DIRECTION current);
+	bool CanThroughCenter(int x, int y);
 	int GetXSize() { return this->xSize; }
 	int GetYSize() { return this->ySize; }
 	bool GetReplaceData(int* out_x, int* out_y, DIRECTION* direction);

@@ -53,6 +53,7 @@ void MovingObject::Update() {
 	if (bx != this->GetBoardX() || by != this->GetBoardY()) {
 		if (!this->board->CanEnter(this->GetBoardX(), this->GetBoardY(), this->direction)) {
 			this->live = false;
+			return;
 		}
 		this->checkedChangeDirection = false;
 	}
@@ -61,6 +62,12 @@ void MovingObject::Update() {
 	if (!this->checkedChangeDirection
 		&& this->px >= this->GetCenterPieceX()
 		&& this->py >= this->GetCenterPieceY()) {
+
+		if (!this->board->CanThroughCenter(this->GetBoardX(), this->GetBoardY())) {
+			this->live = false;
+			return;
+		}
+
 		DIRECTION change_direction = this->board->GetChangeDirection(this->GetBoardX(), this->GetBoardY(), this->direction); 
 		if (change_direction != DIRECTION_NONE) {
 			this->direction = change_direction;

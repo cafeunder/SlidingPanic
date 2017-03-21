@@ -11,6 +11,7 @@ class Stage {
 private:
 	Board* board;
 	MovingObject* movingObject;
+	int time;
 
 public :
 	Stage();

@@ -124,6 +124,10 @@ bool Board::CanEnter(int x, int y, DIRECTION current) {
 	return PieceData::CanEnter(this->pieceArray[y][x], current);
 }
 
+bool Board::CanThroughCenter(int x, int y) {
+	return PieceData::CanThroughCenter(this->pieceArray[y][x]);
+}
+
 DIRECTION Board::GetChangeDirection(int x, int y, DIRECTION current) {
 	return PieceData::GetChangeDirection(this->pieceArray[y][x], current);
 }

@@ -15,6 +15,7 @@ public :
 		FLAG_CHANGE_RIGHT = (1 << 6),
 		FLAG_CHANGE_DOWN = (1 << 7),
 		FLAG_CHANGE_LEFT = (1 << 8),
+		FLAG_CENTER_BREAK = (1 << 9),
 		FLAG_NONE = (1 << 30)
 	};
 
@@ -45,6 +46,7 @@ public :
 	static bool IsBlock(int piece_id);
 	static bool CanEnter(int piece_id, DIRECTION direction);
 	static DIRECTION GetChangeDirection(int piece_id, DIRECTION direction);
+	static bool PieceData::CanThroughCenter(int piece_id);
 
 private:
 	static const unsigned int piece_property[];

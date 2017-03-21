@@ -12,6 +12,9 @@ private:
 	Board* board;
 	MovingObject* movingObject;
 	int time;
+	int goalX;
+	int goalY;
+	bool clear;
 
 public :
 	Stage();

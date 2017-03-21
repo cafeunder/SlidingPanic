@@ -74,6 +74,7 @@
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="PieceData.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="PieceData.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

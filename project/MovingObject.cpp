@@ -134,3 +134,7 @@ int MovingObject::GetCenterPieceX() {
 int MovingObject::GetCenterPieceY() {
 	return (this->GetBoardY() * Board::PIECE_SIZE + Board::PIECE_SIZE / 2) * POSITION_SCALE;
 }
+
+void MovingObject::Kill() {
+	this->live = false;
+}

@@ -11,7 +11,8 @@ class Stage {
 private:
 	Board* board;
 	MovingObject* movingObject;
-	int time;
+	int timelimit;
+	int elapsedTime;
 	int goalX;
 	int goalY;
 	bool clear;

@@ -10,22 +10,30 @@
 Stage::Stage() {
 	this->board = new Board(BOARD_XNUM, BOARD_YNUM);
 	this->movingObject = 0;
+	this->elapsedTime = 0;
 	this->clear = false;
 }
 
 void Stage::Update() {
-	board->Update();
-	movingObject->Update();
+	this->board->Update();
+	this->movingObject->Update();
+
 	if (this->goalX == this->movingObject->GetBoardX() && this->goalY == this->movingObject->GetBoardY()) {
 		this->clear = true;
+	}
+	if (this->elapsedTime >= this->timelimit) {
+		this->movingObject->Kill();
+	} else {
+		this->elapsedTime++;
 	}
 }
 
 void Stage::Draw() {
-	board->Draw();
-	movingObject->Draw();
+	this->board->Draw();
+	this->movingObject->Draw();
 
-	DrawFormatString(150, 0, GetColor(255,255,255), "%d", this->clear);
+	DrawFormatString(620, 0, GetColor(255,255,255), "%d", this->clear);
+	DrawFormatString(160, 0, GetColor(255,255,255), "%d / %d", this->elapsedTime / 60, this->timelimit / 60);
 }
 
 void Stage::ReadFile(const char* stage_name) {
@@ -34,14 +42,19 @@ void Stage::ReadFile(const char* stage_name) {
 	std::ifstream input_stream(buf, std::ios::in);
 
 	std::string line;
+	std::vector<std::string> record;
 	// MovingObject
 	if (!this->movingObject) {
 		delete this->movingObject;
 	}
 
+	// 制限時間の読み込み
+	std::getline(input_stream, line);
+	this->timelimit = std::stoi(line) * 60;
+
 	// スタート地点の読み込み
 	std::getline(input_stream, line);
-	std::vector<std::string> record = SeparateString(line, ',');
+	record = SeparateString(line, ',');
 	int mx = std::stoi(record[0]);
 	int my = std::stoi(record[1]);
 

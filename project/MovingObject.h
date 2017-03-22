@@ -35,6 +35,7 @@ public :
 	int GetBoardY();
 	int GetCenterPieceX();
 	int GetCenterPieceY();
+	void Kill();
 };
 
 #endif

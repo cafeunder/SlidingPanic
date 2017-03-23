@@ -13,6 +13,10 @@ namespace StageMaker {
 
 		private Board board;
 		private Bitmap image;
+		private Image startImage;
+		private Image goalImage;
+		public Point startPoint{ get; set; }
+		public Point goalPoint{ get; set; }
 
 		public DrawPanel() {
 			this.Width = PIECE_SIZE * Board.PIECE_XNUM + MERGIN * 2;
@@ -24,6 +28,8 @@ namespace StageMaker {
 			this.DoubleBuffered = true;
 
 			this.image = new Bitmap(@"..\..\..\project\data/image/tile.png");
+			this.startImage = Image.FromFile(@"..\..\image\start.png");
+			this.goalImage = Image.FromFile(@"..\..\image\goal.png");
 		}
 
 		private void PaintHandler(object sender, PaintEventArgs e) {
@@ -49,6 +55,9 @@ namespace StageMaker {
 					g.DrawImage(this.image, draw_area, clip_area, GraphicsUnit.Pixel);
 				}
 			}
+
+			g.DrawImage(this.startImage, MERGIN + startPoint.X * PIECE_SIZE, MERGIN + startPoint.Y * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE);
+			g.DrawImage(this.goalImage, MERGIN + goalPoint.X * PIECE_SIZE, MERGIN + goalPoint.Y * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE);
 		}
 
 		public void ClickHandler(object sender, MouseEventArgs e) {
@@ -74,10 +83,17 @@ namespace StageMaker {
 			return new Point((px - MERGIN) / PIECE_SIZE, (py - MERGIN) / PIECE_SIZE);
 		}
 
-		public void SaveAs(String filename) {
-			StreamWriter sw = new StreamWriter(filename);
-			sw.Write("test");
-			sw.Close();
+		public void SaveAs(StreamWriter sw) {
+			for (int y = 0; y < this.board.pieceArray.Length; y++) {
+				String line = "";
+				for (int x = 0; x < this.board.pieceArray[y].Length; x++) {
+					line += this.board.pieceArray[y][x];
+					if (x != this.board.pieceArray[y].Length - 1) {
+						line += ",";
+					}
+				}
+				sw.WriteLine(line);
+			}
 		}
 	}
 }

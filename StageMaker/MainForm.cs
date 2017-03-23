@@ -6,9 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace StageMaker {
-	class MainForm : Form {
+	public class MainForm : Form {
 		private MenuStrip menuStrip;
 		private ToolStripMenuItem fileMenuItem;
 		private ToolStripMenuItem saveAsMenuItem;
@@ -19,8 +20,6 @@ namespace StageMaker {
 
 		public MainForm() {
 			this.InitializeComponent();
-			this.FormBorderStyle = FormBorderStyle.FixedSingle;
-			this.MaximizeBox = false;
 
 			this.drawPanel = new DrawPanel();
 			this.Controls.Add(this.drawPanel);
@@ -35,8 +34,7 @@ namespace StageMaker {
 			this.sfd.Title = "ステージファイルを保存";
 			this.sfd.RestoreDirectory = true;
 
-			this.stageInfoForm = new StageInfoForm();
-			this.stageInfoForm.Height = this.Height;
+			this.stageInfoForm = new StageInfoForm(this);
 			this.stageInfoForm.Show(this);
 		}
 
@@ -72,41 +70,55 @@ namespace StageMaker {
 			this.saveMenuItem.Name = "saveMenuItem";
 			this.saveMenuItem.Size = new System.Drawing.Size(172, 22);
 			this.saveMenuItem.Text = "上書き保存";
-			this.saveMenuItem.Click += new System.EventHandler(this.saveMenuItem_Click);
+			this.saveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
 			// 
 			// saveAsMenuItem
 			// 
 			this.saveAsMenuItem.Name = "saveAsMenuItem";
 			this.saveAsMenuItem.Size = new System.Drawing.Size(172, 22);
 			this.saveAsMenuItem.Text = "名前を付けて保存";
-			this.saveAsMenuItem.Click += new System.EventHandler(this.saveAsMenuItem_Click);
+			this.saveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
 			// 
 			// MainForm
 			// 
 			this.ClientSize = new System.Drawing.Size(284, 258);
 			this.Controls.Add(this.menuStrip);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MainMenuStrip = this.menuStrip;
+			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "ステージエディタ";
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 
-		private void saveMenuItem_Click(object sender, EventArgs e) {
+		private void SaveMenuItem_Click(object sender, EventArgs e) {
 			if (this.sfd.FileName == "") {
-				this.saveAsMenuItem_Click(sender, e);
+				this.SaveAsMenuItem_Click(sender, e);
 			} else {
-				this.drawPanel.SaveAs(this.sfd.FileName);
+				StreamWriter sw = new StreamWriter(this.sfd.FileName);
+				this.stageInfoForm.SaveAs(sw);
+				this.drawPanel.SaveAs(sw);
+				sw.Close();
 			}
 		}
 
-		private void saveAsMenuItem_Click(object sender, EventArgs e) {
+		private void SaveAsMenuItem_Click(object sender, EventArgs e) {
 			if (this.sfd.ShowDialog() == DialogResult.OK) {
-				this.drawPanel.SaveAs(this.sfd.FileName);
+				StreamWriter sw = new StreamWriter(this.sfd.FileName);
+				this.stageInfoForm.SaveAs(sw);
+				this.drawPanel.SaveAs(sw);
+				sw.Close();
 			}
+		}
+
+		public void UpdateStageInfo() {
+			this.drawPanel.startPoint = this.stageInfoForm.GetStartPoint();
+			this.drawPanel.goalPoint = this.stageInfoForm.GetGoalPoint();
+			this.drawPanel.Invalidate();
 		}
 	}
 }

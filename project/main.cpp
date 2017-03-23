@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	ImageManager::GetInstance();
 
 	Stage stage;
-	stage.ReadFile("test");
+	stage.ReadFile("stage");
 	while (true) {
 		if (!LoopStart()) break; // ‰Šú‰»ˆ—
 		Keyboard::GetInstance()->Update();

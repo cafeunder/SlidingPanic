@@ -33,6 +33,7 @@ public :
 	void Draw();
 	int GetBoardX();
 	int GetBoardY();
+	bool JudgePassedCenter();
 	int GetCenterPieceX();
 	int GetCenterPieceY();
 	void Kill();

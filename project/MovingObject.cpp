@@ -59,10 +59,7 @@ void MovingObject::Update() {
 	}
 
 	// ピースの中盤に初めて差し掛かったら、方向転換するかどうかをチェック
-	if (!this->checkedChangeDirection
-		&& this->px >= this->GetCenterPieceX()
-		&& this->py >= this->GetCenterPieceY()) {
-
+	if (!this->checkedChangeDirection && this->JudgePassedCenter()) {
 		if (!this->board->CanThroughCenter(this->GetBoardX(), this->GetBoardY())) {
 			this->live = false;
 			return;
@@ -127,10 +124,22 @@ int MovingObject::GetBoardY() {
 	return this->py / POSITION_SCALE / Board::PIECE_SIZE;
 }
 
+bool MovingObject::JudgePassedCenter() {
+	switch(this->direction) {
+	case DIRECTION_UP:
+		return (this->py <= this->GetCenterPieceY());
+	case DIRECTION_DOWN:
+		return (this->py >= this->GetCenterPieceY());
+	case DIRECTION_LEFT:
+		return (this->px <= this->GetCenterPieceX());
+	case DIRECTION_RIGHT:
+		return (this->px >= this->GetCenterPieceX());
+	}
+	return false;
+}
 int MovingObject::GetCenterPieceX() {
 	return (this->GetBoardX() * Board::PIECE_SIZE + Board::PIECE_SIZE / 2) * POSITION_SCALE;
 }
-
 int MovingObject::GetCenterPieceY() {
 	return (this->GetBoardY() * Board::PIECE_SIZE + Board::PIECE_SIZE / 2) * POSITION_SCALE;
 }

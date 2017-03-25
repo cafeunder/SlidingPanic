@@ -11,7 +11,14 @@ namespace StageMaker {
 		public const int MERGIN = 10;
 		public const int PIECE_SIZE = 48;
 
-		private Board board;
+		private Board _board;
+		public Board board {
+			get { return this._board; }
+			set {
+				this._board = value;
+				this.Invalidate();
+			}
+		}
 		private Bitmap image;
 		private Image startImage;
 		private Image goalImage;
@@ -85,7 +92,7 @@ namespace StageMaker {
 
 		public void SaveAs(StreamWriter sw) {
 			for (int y = 0; y < this.board.pieceArray.Length; y++) {
-				String line = "";
+				string line = "";
 				for (int x = 0; x < this.board.pieceArray[y].Length; x++) {
 					line += this.board.pieceArray[y][x];
 					if (x != this.board.pieceArray[y].Length - 1) {
@@ -94,6 +101,29 @@ namespace StageMaker {
 				}
 				sw.WriteLine(line);
 			}
+		}
+
+		public void LoadAs(StreamReader sr) {
+			for (int y = 0; y < this.board.pieceArray.Length; y++) {
+				string line = sr.ReadLine();
+				string[] record = line.Split(',');
+
+				for (int x = 0; x < this.board.pieceArray[y].Length; x++) {
+					this.board.pieceArray[y][x] = Int32.Parse(record[x]);
+				}
+			}
+
+			this.Invalidate();
+		}
+
+		public void Clear() {
+			for (int y = 0; y < this.board.pieceArray.Length; y++) {
+				for (int x = 0; x < this.board.pieceArray[y].Length; x++) {
+					this.board.pieceArray[y][x] = 1;
+				}
+			}
+
+			this.Invalidate();
 		}
 	}
 }

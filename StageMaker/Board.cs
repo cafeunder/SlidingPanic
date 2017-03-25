@@ -19,5 +19,15 @@ namespace StageMaker {
 				}
 			}
 		}
+
+		public Board Clone() {
+			Board board = new Board();
+			for (int y = 0; y < PIECE_YNUM; y++) {
+				for (int x = 0; x < PIECE_XNUM; x++) {
+					board.pieceArray[y][x] = this.pieceArray[y][x];
+				}
+			}
+			return board;
+		}
 	}
 }

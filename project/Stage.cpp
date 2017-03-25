@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <DxLib.h>
+#include "Keyboard.h"
 #include "Stage.h"
 #include "Board.h"
 #include "MovingObject.h"
@@ -17,6 +18,10 @@ Stage::Stage() {
 void Stage::Update() {
 	this->board->Update();
 	this->movingObject->Update();
+	if (KEYINPUT(KEY_INPUT_SPACE) > 0) {
+		this->movingObject->Update();
+		this->movingObject->Update();
+	}
 
 	if (this->goalX == this->movingObject->GetBoardX() && this->goalY == this->movingObject->GetBoardY()) {
 		this->clear = true;
@@ -25,6 +30,10 @@ void Stage::Update() {
 		this->movingObject->Kill();
 	} else {
 		this->elapsedTime++;
+		if (KEYINPUT(KEY_INPUT_SPACE) > 0) {
+			this->elapsedTime++;
+			this->elapsedTime++;
+		}
 	}
 }
 

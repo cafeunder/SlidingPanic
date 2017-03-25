@@ -4,6 +4,7 @@
 const char* image_list[] = {
 	"tile",
 	"mychar",
+	"title",
 	0
 };
 

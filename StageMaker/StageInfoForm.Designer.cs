@@ -132,6 +132,11 @@
 			// timelimitUpDown
 			// 
 			this.timelimitUpDown.Location = new System.Drawing.Point(83, 16);
+			this.timelimitUpDown.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
 			this.timelimitUpDown.Name = "timelimitUpDown";
 			this.timelimitUpDown.Size = new System.Drawing.Size(40, 19);
 			this.timelimitUpDown.TabIndex = 11;

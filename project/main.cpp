@@ -2,7 +2,7 @@
 #include "main.h"
 #include "Keyboard.h"
 #include "ImageManager.h"
-#include "Stage.h"
+#include "SceneManager.h"
 
 //------------------------------------------------------//
 // メイン関数                                           //
@@ -33,15 +33,14 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int) {
 	SetDrawScreen(DX_SCREEN_BACK); // ダブルバッファのためのセッタ
 	ImageManager::GetInstance();
 
-	Stage stage;
-	stage.ReadFile("stage");
+	SceneManager sceneManager;
 	while (true) {
 		if (!LoopStart()) break; // 初期化処理
 		Keyboard::GetInstance()->Update();
 		if (KEYINPUT(KEY_INPUT_ESCAPE) == 1) break;
 
-		stage.Update();
-		stage.Draw();
+		sceneManager.Update();
+		sceneManager.Draw();
 	}
 
 	DxLib_End();

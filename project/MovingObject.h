@@ -14,7 +14,7 @@ class MovingObject {
 private:
 	static const int IMAGE_SIZE = 32;
 	static const int POSITION_SCALE = 100;
-	static const int MOVE_SPEED = 60;
+	static const int MOVE_SPEED = 30;
 	Board* board;
 	int px;
 	int py;

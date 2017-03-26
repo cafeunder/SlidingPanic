@@ -15,32 +15,37 @@ Stage::Stage() {
 	this->clear = false;
 }
 
-void Stage::Update() {
+int Stage::Update() {
 	this->board->Update();
 	this->movingObject->Update();
-	if (KEYINPUT(KEY_INPUT_SPACE) > 0) {
+	if (KEYINPUT(KEY_INPUT_SPACE) > 0 && !this->clear) {
 		this->movingObject->Update();
 		this->movingObject->Update();
 	}
 
 	if (this->goalX == this->movingObject->GetBoardX() && this->goalY == this->movingObject->GetBoardY()) {
 		this->clear = true;
+		return 1;
 	}
 	if (this->elapsedTime >= this->timelimit) {
 		this->movingObject->Kill();
-	} else {
+	} else if(!this->clear) {
 		this->elapsedTime++;
 		if (KEYINPUT(KEY_INPUT_SPACE) > 0) {
 			this->elapsedTime++;
 			this->elapsedTime++;
 		}
 	}
+
+	if (this->movingObject->IsDead()) {
+		return -1;
+	}
+	return 0;
 }
 
 void Stage::Draw() {
 	this->board->Draw();
 	this->movingObject->Draw();
-
 	DrawFormatString(620, 0, GetColor(255,255,255), "%d", this->clear);
 	DrawFormatString(160, 0, GetColor(255,255,255), "%d / %d", this->elapsedTime / 60, this->timelimit / 60);
 }

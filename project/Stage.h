@@ -19,7 +19,7 @@ private:
 
 public :
 	Stage();
-	void Update();
+	int Update();
 	void Draw();
 	void ReadFile(const char* stage_name);
 };

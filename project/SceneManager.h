@@ -21,7 +21,22 @@ public :
 
 class PlayScene : public Scene {
 private:
+	enum Status{
+		STATUS_START,
+		STATUS_PLAY,
+		STATUS_CLEAR,
+		STATUS_GAMEOVER
+	};
+	static const int START_COUNT = 60;
+	static const int CLEAR_COUNT = 240;
+	static const int GAMEOVER_COUNT = 180;
+
 	Stage* stage;
+	Status status;
+	int startImage;
+	int clearImage;
+	int gameoverImage;
+	int count;
 
 public :
 	PlayScene();

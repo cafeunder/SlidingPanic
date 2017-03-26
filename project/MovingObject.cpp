@@ -147,3 +147,7 @@ int MovingObject::GetCenterPieceY() {
 void MovingObject::Kill() {
 	this->live = false;
 }
+
+bool MovingObject::IsDead() {
+	return !this->live;
+}

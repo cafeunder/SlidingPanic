@@ -37,6 +37,7 @@ public :
 	int GetCenterPieceX();
 	int GetCenterPieceY();
 	void Kill();
+	bool IsDead();
 };
 
 #endif

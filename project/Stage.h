@@ -3,6 +3,7 @@
 
 #define BOARD_XNUM 12
 #define BOARD_YNUM 8
+#define STAGE_NUM 3
 
 class Board;
 class MovingObject;
@@ -21,7 +22,7 @@ public :
 	Stage();
 	int Update();
 	void Draw();
-	void ReadFile(const char* stage_name);
+	void ReadFile(int stage_index);
 };
 
 #endif STAGE_DEF

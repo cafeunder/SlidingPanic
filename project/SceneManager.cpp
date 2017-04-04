@@ -40,15 +40,34 @@ void TitleScene::Draw() {
 }
 
 
+// ゲームクリアシーン
+GameClearScene::GameClearScene() {
+	this->imgHandle = GETIMAGE("gameclear");
+}
+
+Scene* GameClearScene::Update() {
+	if (KEYINPUT(KEY_INPUT_SPACE) == 1) {
+		return new TitleScene();
+	}
+	return 0;
+}
+
+void GameClearScene::Draw() {
+	DrawGraph(0, 0, this->imgHandle, false);
+}
+
+
 // プレイシーン
 PlayScene::PlayScene() {
 	this->stage = new Stage();
-	this->stage->ReadFile("stage2");
 	this->status = PlayScene::Status::STATUS_START;
 	this->startImage = GETIMAGE("start");
 	this->clearImage = GETIMAGE("clear");
 	this->gameoverImage = GETIMAGE("gameover");
 	this->count = 0;
+
+	this->stageIndex = 0;
+	this->stage->ReadFile(this->stageIndex);
 }
 
 PlayScene::~PlayScene() {
@@ -79,6 +98,13 @@ Scene* PlayScene::Update() {
 		if (this->count >= CLEAR_COUNT) {
 			this->status = PlayScene::Status::STATUS_START;
 			this->count = 0;
+
+			++this->stageIndex;
+			if (this->stageIndex < STAGE_NUM) {
+				this->stage->ReadFile(this->stageIndex);
+			} else {
+				return new GameClearScene();
+			}
 		} else {
 			this->stage->Update();
 			this->count++;

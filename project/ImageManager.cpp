@@ -5,6 +5,7 @@ const char* image_list[] = {
 	"tile",
 	"mychar",
 	"title",
+	"gameclear",
 	"start",
 	"gameover",
 	"clear",

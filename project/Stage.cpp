@@ -50,9 +50,9 @@ void Stage::Draw() {
 	DrawFormatString(160, 0, GetColor(255,255,255), "%d / %d", this->elapsedTime / 60, this->timelimit / 60);
 }
 
-void Stage::ReadFile(const char* stage_name) {
+void Stage::ReadFile(int stage_index) {
 	char buf[256];
-	sprintf(buf, "data\\stage\\%s.txt", stage_name);
+	sprintf(buf, "data\\stage\\stage%d.txt", (stage_index+1));
 	std::ifstream input_stream(buf, std::ios::in);
 
 	std::string line;
@@ -61,6 +61,10 @@ void Stage::ReadFile(const char* stage_name) {
 	if (!this->movingObject) {
 		delete this->movingObject;
 	}
+
+	// 経過時間とクリアフラグを初期化
+	this->elapsedTime = 0;
+	this->clear = false;
 
 	// 制限時間の読み込み
 	std::getline(input_stream, line);

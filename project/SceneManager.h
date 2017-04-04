@@ -19,6 +19,16 @@ public :
 	void Draw();
 };
 
+class GameClearScene : public Scene {
+private:
+	int imgHandle;
+
+public :
+	GameClearScene();
+	Scene* Update();
+	void Draw();
+};
+
 class PlayScene : public Scene {
 private:
 	enum Status{
@@ -37,6 +47,7 @@ private:
 	int clearImage;
 	int gameoverImage;
 	int count;
+	int stageIndex;
 
 public :
 	PlayScene();

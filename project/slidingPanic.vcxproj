@@ -73,7 +73,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="PieceData.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
@@ -84,7 +86,9 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="PieceData.h" />
+    <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>

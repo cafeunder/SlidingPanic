@@ -113,7 +113,7 @@ void MovingObject::Draw() {
 	SetDrawMode( DX_DRAWMODE_NEAREST );
 
 	// DEBUG
-	DrawFormatString(0, 0, GetColor(255,255,255), "%d, %d", this->px, this->py);
+	DrawFormatString(5, 0, GetColor(255,255,255), "%d, %d", this->px, this->py);
 }
 
 int MovingObject::GetBoardX() {

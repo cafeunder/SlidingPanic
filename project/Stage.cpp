@@ -2,39 +2,39 @@
 #include <sstream>
 #include <vector>
 #include <DxLib.h>
-#include "Keyboard.h"
 #include "Stage.h"
 #include "Board.h"
 #include "MovingObject.h"
 #include "Util.h"
+#include "Score.h"
 
 Stage::Stage() {
 	this->board = new Board(BOARD_XNUM, BOARD_YNUM);
 	this->movingObject = 0;
 	this->elapsedTime = 0;
 	this->clear = false;
+	this->stageNum = 0;
 }
 
-int Stage::Update() {
+int Stage::Update(Score* score) {
 	this->board->Update();
 	this->movingObject->Update();
-	if (KEYINPUT(KEY_INPUT_SPACE) > 0 && !this->clear) {
-		this->movingObject->Update();
-		this->movingObject->Update();
-	}
+	if (this->clear) { return 0; }
 
 	if (this->goalX == this->movingObject->GetBoardX() && this->goalY == this->movingObject->GetBoardY()) {
 		this->clear = true;
+
+		// 残り時間ボーナス
+		score->AddTimeBonus((int)((1.0 - this->UseTimeRatio()) * 20) * 100);
+		// ステージクリアボーナス
+		score->AddStageClearBonus((this->stageNum * 300) + 500);
 		return 1;
 	}
+
 	if (this->elapsedTime >= this->timelimit) {
 		this->movingObject->Kill();
 	} else if(!this->clear) {
 		this->elapsedTime++;
-		if (KEYINPUT(KEY_INPUT_SPACE) > 0) {
-			this->elapsedTime++;
-			this->elapsedTime++;
-		}
 	}
 
 	if (this->movingObject->IsDead()) {
@@ -47,7 +47,7 @@ void Stage::Draw() {
 	this->board->Draw();
 	this->movingObject->Draw();
 	DrawFormatString(620, 0, GetColor(255,255,255), "%d", this->clear);
-	DrawFormatString(160, 0, GetColor(255,255,255), "%d / %d", this->elapsedTime / 60, this->timelimit / 60);
+	DrawFormatString(160, 0, GetColor(255,255,255), "time : %d / %d", this->elapsedTime / 60, this->timelimit / 60);
 }
 
 void Stage::ReadFile(int stage_index) {
@@ -63,6 +63,7 @@ void Stage::ReadFile(int stage_index) {
 	}
 
 	// 経過時間とクリアフラグを初期化
+	this->stageNum = stage_index;
 	this->elapsedTime = 0;
 	this->clear = false;
 
@@ -107,4 +108,8 @@ void Stage::ReadFile(int stage_index) {
 		mx * Board::PIECE_SIZE + Board::PIECE_SIZE / 2,
 		my * Board::PIECE_SIZE + Board::PIECE_SIZE / 2, this->board
 	);
+}
+
+double Stage::UseTimeRatio() {
+	return this->elapsedTime / (double)this->timelimit;
 }

@@ -1,14 +1,14 @@
 #ifndef SCENE_MANAGER_DEF
 #define SCENE_MANAGER_DEF
 
-class Stage;
-
+// シーンを表すクラスの基底クラス
 class Scene {
 public :
 	virtual Scene* Update() = 0;
 	virtual void Draw() = 0;
 };
 
+// タイトルシーン
 class TitleScene : public Scene {
 private:
 	int imgHandle;
@@ -19,6 +19,7 @@ public :
 	void Draw();
 };
 
+// ゲームクリアシーン
 class GameClearScene : public Scene {
 private:
 	int imgHandle;
@@ -29,33 +30,7 @@ public :
 	void Draw();
 };
 
-class PlayScene : public Scene {
-private:
-	enum Status{
-		STATUS_START,
-		STATUS_PLAY,
-		STATUS_CLEAR,
-		STATUS_GAMEOVER
-	};
-	static const int START_COUNT = 60;
-	static const int CLEAR_COUNT = 240;
-	static const int GAMEOVER_COUNT = 180;
-
-	Stage* stage;
-	Status status;
-	int startImage;
-	int clearImage;
-	int gameoverImage;
-	int count;
-	int stageIndex;
-
-public :
-	PlayScene();
-	~PlayScene();
-	Scene* Update();
-	void Draw();
-};
-
+// シーンの切り替えを管理するマネージャ
 class SceneManager {
 public :
 	void Update();

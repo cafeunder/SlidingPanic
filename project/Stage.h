@@ -5,6 +5,7 @@
 #define BOARD_YNUM 8
 #define STAGE_NUM 3
 
+class Score;
 class Board;
 class MovingObject;
 
@@ -12,6 +13,7 @@ class Stage {
 private:
 	Board* board;
 	MovingObject* movingObject;
+	int stageNum;
 	int timelimit;
 	int elapsedTime;
 	int goalX;
@@ -20,9 +22,10 @@ private:
 
 public :
 	Stage();
-	int Update();
+	int Update(Score* score);
 	void Draw();
 	void ReadFile(int stage_index);
+	double UseTimeRatio();
 };
 
 #endif STAGE_DEF

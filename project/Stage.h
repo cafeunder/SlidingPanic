@@ -23,6 +23,7 @@ private:
 public :
 	Stage();
 	int Update(Score* score);
+	int CanFastUpdate();
 	void Draw();
 	void ReadFile(int stage_index);
 	double UseTimeRatio();

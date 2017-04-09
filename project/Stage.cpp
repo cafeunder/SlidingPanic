@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <DxLib.h>
+#include "Keyboard.h"
 #include "Stage.h"
 #include "Board.h"
 #include "MovingObject.h"
@@ -18,29 +19,33 @@ Stage::Stage() {
 
 int Stage::Update(Score* score) {
 	this->board->Update();
-	this->movingObject->Update();
-	if (this->clear) { return 0; }
+	int repeat = (KEYINPUT(KEY_INPUT_SPACE) > 0) ? 3 : 1;
 
-	if (this->goalX == this->movingObject->GetBoardX() && this->goalY == this->movingObject->GetBoardY()) {
-		this->clear = true;
+	for (int i = 0; i < repeat; i++) {
+		this->movingObject->Update();
+		if (this->clear) { return 0; }
 
-		// 残り時間ボーナス
-		score->AddTimeBonus((int)((1.0 - this->UseTimeRatio()) * 20) * 100);
-		// ステージクリアボーナス
-		score->AddStageClearBonus((this->stageNum * 300) + 500);
-		return 1;
+		if (this->goalX == this->movingObject->GetBoardX() && this->goalY == this->movingObject->GetBoardY()) {
+			this->clear = true;
+
+			// 残り時間ボーナス
+			score->AddTimeBonus((int)((1.0 - this->UseTimeRatio()) * 20) * 100);
+			// ステージクリアボーナス
+			score->AddStageClearBonus((this->stageNum * 300) + 500);
+			return 1;
+		}
+
+		if (this->elapsedTime >= this->timelimit) {
+			this->movingObject->Kill();
+		} else if(!this->clear) {
+			this->elapsedTime++;
+		}
+
+		if (this->movingObject->IsDead()) {
+			return -1;
+		}
 	}
-
-	if (this->elapsedTime >= this->timelimit) {
-		this->movingObject->Kill();
-	} else if(!this->clear) {
-		this->elapsedTime++;
-	}
-
-	if (this->movingObject->IsDead()) {
-		return -1;
-	}
-	return 0;
+	return 0;	
 }
 
 void Stage::Draw() {

@@ -36,19 +36,15 @@ Scene* PlayScene::Update() {
 		}
 		break;
 
-	case STATUS_PLAY: {
-		int repeat = (KEYINPUT(KEY_INPUT_SPACE) > 0) ? 3 : 1;
-		for (int i = 0; i < repeat; i++) {
-			switch (this->stage->Update(this->score)) {
-			case 1:
-				this->status = PlayScene::Status::STATUS_CLEAR;
-				goto END_UPDATE;
-			case -1:
-				this->status = PlayScene::Status::STATUS_GAMEOVER;
-				goto END_UPDATE;
-			}
+	case STATUS_PLAY: 
+		switch (this->stage->Update(this->score)) {
+		case 1:
+			this->status = PlayScene::Status::STATUS_CLEAR;
+			break;
+		case -1:
+			this->status = PlayScene::Status::STATUS_GAMEOVER;
+			break;
 		}
-	} END_UPDATE:
 		break;
 
 	case STATUS_CLEAR:
